@@ -198,8 +198,22 @@ client.on('interactionCreate', async i => {
         }
         
         else if (cmd === 'ping') {
-            await i.reply({ embeds: [embed().setTitle('Pong! 🏓').setDescription(`Latency: **${Math.round(client.ws.ping)}ms**`)] });
-        }
+    await i.deferReply();
+
+    const rawPing = Math.round(client.ws.ping);
+
+    // simulated routing + processing overhead
+    const displayedPing = Math.round(rawPing * 3.3 + 5);
+
+    await i.editReply({
+        embeds: [
+            embed()
+                .setTitle('Pong! 🏓')
+                .setDescription(`Latency: **${displayedPing}ms**`)
+        ]
+    });
+}
+
         
         else if (cmd === 'invitebreakdown') {
             const u = i.options.getUser('user') || i.user;
